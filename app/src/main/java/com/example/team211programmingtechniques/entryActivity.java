@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 // To import DBObject-methods
-import database.DBObject;
+import com.example.team211programmingtechniques.database.DBObject;
 // To handle the GIF
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
