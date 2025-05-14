@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
-
+    alias(libs.plugins.androidApplication)
 }
 
 android {
@@ -46,5 +45,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     // Extra dependencies added
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
 }

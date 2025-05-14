@@ -2,36 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#014D4D"
     android:gravity="center"
-    android:background="@drawable/background_gradient"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <!-- ImageView for the Icon (Logo) -->
     <ImageView
+        android:contentDescription="Logo of application"
         android:id="@+id/logoImageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/convy_logo"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/convy_logo" />
 
     <!-- ImageView for the Loading GIF -->
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/loading_icon_beta" />
+        android:src="@drawable/convy_loading_animation" />
 
     <!-- TextView for Welcome Message -->
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!"
-        android:textSize="48sp"
-        android:textColor="#FFFF" />
+        android:fontFamily="serif"
+        android:text="Lend it. Borrow it. Convy it."
+        android:textColor="#FFFF"
+        android:textSize="26dp"
+        android:textStyle="bold" />
 
 </LinearLayout>
 
