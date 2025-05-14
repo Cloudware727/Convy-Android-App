@@ -61,7 +61,7 @@ public class LoginPage extends AppCompatActivity {
 
             new Thread(() -> {
                 DBObject db = new DBObject();
-                String response = db.sentGetRequestString(
+                String response = db.sendGetRequestString(
                         "https://studev.groept.be/api/a24pt211/CheckLoginData/" + username + "/" + hashedpassword
                 );
 
