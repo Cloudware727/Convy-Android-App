@@ -1,4 +1,4 @@
-package database;
+package com.example.team211programmingtechniques.database;
 
 // Imports
 import org.json.JSONArray;
@@ -23,7 +23,7 @@ public class DBObject {
     /--------------------------------------------------------------------------------------------------------------/
     */
     // General Methods
-    private String sentGetRequestString(String urlString) {
+    public String sentGetRequestString(String urlString) {
         HttpURLConnection conn = null;
         StringBuilder response = new StringBuilder();
         String line;
@@ -54,7 +54,7 @@ public class DBObject {
         return response.toString();
     }
 
-    private boolean sendPostRequest(String urlString, String params) {
+    public boolean sendPostRequest(String urlString, String params) {
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

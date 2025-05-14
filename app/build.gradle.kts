@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+
 }
 
 android {
@@ -27,13 +26,16 @@ android {
             )
         }
     }
+
+    buildFeatures{
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kapt {
-        correctErrorTypes = true
-    }
+
 }
 
 dependencies {
@@ -45,5 +47,4 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     // Extra dependencies added
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    kapt("com.github.bumptech.glide:compiler:4.16.0")
 }
