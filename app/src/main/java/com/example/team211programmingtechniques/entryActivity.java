@@ -66,8 +66,8 @@ public class entryActivity extends AppCompatActivity {
 
                 // Once reachable => switch back to main thread
                 mainHandler.postDelayed(() -> {
-                    Log.d("entryActivity", "Database reachable, Transitioning into loginActivity");
-                    startActivity(new Intent(entryActivity.this, loginActivity.class));
+                    Log.d("entryActivity", "Database reachable, Transitioning into LoginPage");
+                    startActivity(new Intent(entryActivity.this, LoginPage.class));
                     finish();
                 }, 3000);
             });

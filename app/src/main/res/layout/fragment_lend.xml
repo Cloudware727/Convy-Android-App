@@ -1,6 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- Upload Photos Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_upload_photos"
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/dark_green"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="+ Upload Photo(s)" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="#33000000" />
+
+        <!-- Item Name Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="Item Name"
+            android:textStyle="bold"/>
+
+        <!-- Item Name EditText -->
+        <EditText
+            android:id="@+id/edit_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:inputType="textAutoComplete"
+            android:hint="Enter item name" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="#33000000" />
+
+        <!-- Price Per Day Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="Price Per Day"
+            android:textStyle="bold"/>
+
+        <!-- Price Per Day EditText (digits only) -->
+        <EditText
+            android:id="@+id/edit_price_per_day"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:inputType="number"
+            android:hint="Enter price per day" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="#33000000" />
+
+        <!-- Description Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="Description"
+            android:textStyle="bold" />
+
+        <!-- Description EditText -->
+        <EditText
+            android:id="@+id/edit_description"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:hint="Enter description"
+            android:minLines="3"
+            android:gravity="top"
+            android:inputType="textMultiLine" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="#33000000" />
+
+        <!-- Category Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="Category"
+            android:textStyle="bold" />
+
+        <!-- Category Spinner -->
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_final_upload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="@color/dark_green"
+            android:textStyle="bold"
+            android:text="Upload Item" />
+    </LinearLayout>
+
+</ScrollView>

@@ -24,7 +24,7 @@ public class DBObject {
     */
     // Specific methods
     public boolean isDatabaseReachable() {
-        String pingSuffix = "ping";
+        String pingSuffix = "/ping";
         String finalURL = DBUrl + pingSuffix;
         String dbResponse = sendGetRequestString(finalURL);
 

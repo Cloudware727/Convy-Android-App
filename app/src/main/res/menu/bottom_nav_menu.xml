@@ -6,7 +6,7 @@
         android:icon="@drawable/rent_icon"
         android:id = "@+id/rent"/>
     <item
-        android:title="Lend"
+        android:title="Lend Out"
         android:icon = "@drawable/sell_icon"
         android:id = "@+id/lend"/>
     <item
