@@ -9,11 +9,11 @@
 
     <!-- ImageView for the Icon (Logo) -->
     <ImageView
-        android:contentDescription="Logo of application"
         android:id="@+id/logoImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="256dp"
+        android:layout_height="249dp"
         android:layout_marginBottom="20dp"
+        android:contentDescription="Logo of application"
         android:src="@drawable/convy_logo" />
 
     <!-- ImageView for the Loading GIF -->

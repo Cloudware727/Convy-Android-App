@@ -2,6 +2,9 @@ package com.example.team211programmingtechniques.database;
 
 // Imports - Json related
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -14,7 +17,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.*;
 import java.nio.charset.StandardCharsets; // For formatting queries to JSON WEB API
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 // Imports - Volley related
@@ -26,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.team211programmingtechniques.RentItem;
 
 public class DBObject {
     // URLS
@@ -107,6 +113,55 @@ public class DBObject {
             }
         });
     }
+
+    public void GetItemDetails(DBCallback<List<RentItem>> callback) {
+        String ItemSuffix = "/GetLast10Items";
+        String SendUrl = DBUrl + ItemSuffix;
+
+        volleyGETRequest(SendUrl, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                try {
+                    List<RentItem> rentItems = new ArrayList<>();
+
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject obj = result.getJSONObject(i);
+
+                        String title = obj.getString("item_name");
+                        String description = obj.getString("description");
+                        int price = obj.getInt("price_per_day");
+                        String phone = obj.getString("phone_number");
+                        String location = obj.getString("location");
+                        String category = obj.getString("category_name");
+
+                        // Decode Base64 photo
+                        String base64Photo = obj.getString("photos");
+                        byte[] imageBytes = Base64.decode(base64Photo, Base64.DEFAULT);
+                        Bitmap photo = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                        RentItem item = new RentItem(title,photo, price, phone, location, description, category);
+                        rentItems.add(item);
+                    }
+                    // Success: return parsed list
+                    callback.onSuccessDB(rentItems);
+                }
+                catch (JSONException e) {
+                    callback.onErrorDB(e.getMessage());
+                    Log.e("Database", "JSON Error: " + e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+                Log.e("Volley", "Error: " + error);
+            }
+        });
+    }
+
+
+
+
 
     /*
     /--------------------------------------------------------------------------------------------------------------/
