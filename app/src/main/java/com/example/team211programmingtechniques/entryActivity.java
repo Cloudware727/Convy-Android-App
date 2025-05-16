@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 // To import DBObject-methods
+import com.example.team211programmingtechniques.database.DBCallback;
 import com.example.team211programmingtechniques.database.DBObject;
 // To handle the GIF
 import pl.droidsonroids.gif.GifDrawable;
@@ -25,7 +26,7 @@ public class entryActivity extends AppCompatActivity {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     public entryActivity() {
-        this.db = new DBObject();
+        this.db = new DBObject(this);
     }
 
     @Override
@@ -50,31 +51,31 @@ public class entryActivity extends AppCompatActivity {
     }
 
     private void pingDatabaseTask() {
-        Log.d("entryActivity", "Starting database ping...");
         executor.execute(() -> {
-            boolean reachable = db.isDatabaseReachable();
-            Log.d("entryActivity", "Database reachable: " + reachable);
-            while(!reachable) {
-                try {
-                    Log.d("entryActivity", "Databse not reachable, retrying in 2s...");
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return;
+            db.isDatabaseReachable(new DBCallback<Boolean>() {
+                @Override
+                public void onSuccessDB(Boolean result) {
+                    if (result) {
+                        mainHandler.postDelayed(() -> {
+                            startActivity(new Intent(entryActivity.this, LoginPage.class));
+                            finish();
+                        }, 3000);
+                    } else {
+                        Log.d("entryActivity", "Database NOT reachable. Retrying in 2 seconds...");
+                        retryPingWithDelay();
+                    }
                 }
-            }
 
-                // Once reachable => switch back to main thread
-                mainHandler.postDelayed(() -> {
-                    Log.d("entryActivity", "Database reachable, Transitioning into LoginPage");
-                    startActivity(new Intent(entryActivity.this, LoginPage.class));
-                    finish();
-                }, 3000);
+                @Override
+                public void onErrorDB(String error) {
+                    Log.e("entryActivity", "Ping error: " + error);
+                    retryPingWithDelay();
+                }
             });
+        });
         }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        executor.shutdown();
+
+    private void retryPingWithDelay() {
+        mainHandler.postDelayed(this::pingDatabaseTask, 2000);
     }
 }

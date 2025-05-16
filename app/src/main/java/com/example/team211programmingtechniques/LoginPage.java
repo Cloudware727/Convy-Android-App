@@ -60,7 +60,7 @@ public class LoginPage extends AppCompatActivity {
             }
 
             new Thread(() -> {
-                DBObject db = new DBObject();
+                DBObject db = new DBObject(this);
                 String response = db.sendGetRequestString(
                         "https://studev.groept.be/api/a24pt211/CheckLoginData/" + username + "/" + hashedpassword
                 );
@@ -79,6 +79,8 @@ public class LoginPage extends AppCompatActivity {
                 String finalResponse = response;
                 runOnUiThread(() -> {
                     if (finalMatchFound == 1) {
+                        // To store username for later use
+                        getSharedPreferences("user_prefs", MODE_PRIVATE).edit().putString("username", username).apply();
                         Toast.makeText(LoginPage.this, "Login successful!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginPage.this, MainActivity.class);
                         startActivity(intent);

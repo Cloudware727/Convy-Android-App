@@ -64,7 +64,7 @@ public class SignUpPage extends AppCompatActivity {
             }
 
             new Thread(() -> {
-                DBObject db = new DBObject();
+                DBObject db = new DBObject(this);
                 String response = db.sendGetRequestString(
                         "https://studev.groept.be/api/a24pt211/CheckIfUserNameOrPasswordExists/" + username + "/" + email
                 );
@@ -75,7 +75,7 @@ public class SignUpPage extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (finalResponse.equals("[]")) {
                         new Thread(() -> {
-                            DBObject db2 = new DBObject();
+                            DBObject db2 = new DBObject(this);
                             String inserted = db2.sendGetRequestString("https://studev.groept.be/api/a24pt211/SignInQuery/"+username+"/"+hashedpassword+"/"+email);
                             String insertUser = db2.sendGetRequestString(
                                     "https://studev.groept.be/api/a24pt211/AddUsernameToPersonalDetails/"+username
