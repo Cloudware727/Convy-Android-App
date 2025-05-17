@@ -74,6 +74,42 @@ public class DBObject {
         });
     }
 
+    public void retrieveUserInfo (String userName, DBCallback<String[]> callback) {
+        String retriveSuffix = "/retrieveUserInfo/" + userName;
+        String finalURL = DBUrl + retriveSuffix;
+        
+        volleyGETRequest(finalURL, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                // Default fallback
+                String[] defaultInfo = new String[] { "null", "null", "null", "null", "null"};
+
+                if (result == null || result.length() == 0) {
+                    callback.onSuccessDB(defaultInfo);
+                    return;
+                }
+
+                try {
+                    // Just take the first object
+                    JSONObject curObject = result.getJSONObject(0);
+                    String[] actualInfo = userInfoStringArray(curObject);
+
+                    callback.onSuccessDB(actualInfo);
+
+                } catch (JSONException e) {
+                    Log.e("Database", "JSON Parsing Error", e);
+                    callback.onSuccessDB(defaultInfo); // fallback on failure
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+                Log.e("Volley", "Error: " + error);
+            }
+        });
+    }
+
     public void postImage(DBCallback<Boolean> callback, String username, String imageString, String itemName, String dateListed, int itemPrice, String itemDescription, int itemCategoryIndex, int itemStatus) {
         // Create URL
         String[] urlSuffixes = new String[] {"postImage",
@@ -167,6 +203,17 @@ public class DBObject {
     /--------------------------------------------------------------------------------------------------------------/
     */
     // General Methods
+
+    private String[] userInfoStringArray(JSONObject obj) {
+        return new String[] {
+                obj.optString("first_name", "null"),
+                obj.optString("last_name", "null"),
+                obj.optString("email", "null"),
+                obj.optString("phone_number", "null"),
+                obj.optString("location", "null"),
+        };
+    }
+
     public String sendGetRequestString(String urlString) {
         HttpURLConnection conn = null;
         StringBuilder response = new StringBuilder();

@@ -50,8 +50,10 @@ public class LendFragment extends Fragment {
     private HashMap<String, Integer> categoryMap;
     // Image chosen by user
     private ImageView imageChosen;
-    // Upload photo button
-    private Button uploadPhotoBtn, uploadPostBtn ;
+    // Upload post button
+    private Button uploadPostBtn;
+    // Upload photo section
+    private View uploadPhotoSection;
     // Bitmap of photo chosen
     private Bitmap bitmap;
     private ProgressBar progressBar;
@@ -79,7 +81,7 @@ public class LendFragment extends Fragment {
             categoryMap.put(categories[i], i);
         }
         // Determine current status (0 = lent out, 1 = rented)
-        int statusOfItem = 0;
+        statusOfItem = 0;
     }
 
     @Nullable
@@ -118,10 +120,10 @@ public class LendFragment extends Fragment {
         // Trace back ID of image chosen element in XML
         imageChosen = v.findViewById(R.id.image_chosen);
         // Trace back ID of upload photo button element in XML
-        uploadPhotoBtn = v.findViewById(R.id.button_upload_photos);
+        uploadPhotoSection = v.findViewById(R.id.section_upload_photos);
         // onClickListener of Upload Photos Button
-        uploadPhotoBtn.setOnClickListener(view -> {
-            onBtnPickClicked();
+        uploadPhotoSection.setOnClickListener(view -> {
+            onSectionPickClicked();
         });
         // Declare launcher
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -171,7 +173,7 @@ public class LendFragment extends Fragment {
     }
 
     // Purpose of button - image pick
-    private void onBtnPickClicked() {
+    private void onSectionPickClicked() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         imagePickerLauncher.launch(Intent.createChooser(intent, "Select Image"));
@@ -186,11 +188,11 @@ public class LendFragment extends Fragment {
             public void onSuccessDB(Boolean result) {
                 if (result == true) {
                     progressBar.setVisibility(view.GONE);
-                    Toast.makeText(requireContext(), "Post request executed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Item posted!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     progressBar.setVisibility(view.GONE);
-                    Toast.makeText(requireContext(), "Post request failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Failed to post item", Toast.LENGTH_LONG).show();
                 }
             }
 

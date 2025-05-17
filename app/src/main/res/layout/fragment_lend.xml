@@ -1,188 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F8F9FB"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <!-- Upload Photos Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_upload_photos"
-            android:layout_width="300dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/dark_green"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="+ Upload Photo"
-            android:onClick="onBtnPickClicked"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-        <!-- Divider -->
-        <View
+        <!-- Upload Area (Modern Upload Box Style) -->
+        <LinearLayout
+            android:id="@+id/section_upload_photos"
             android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="#33000000" />
+            android:layout_height="180dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/upload_box"
+            android:padding="24dp">
 
-        <!-- Chosen Photo Label -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:text="Chosen Photo of Item"
-            android:textStyle="bold"/>
-
-        <!-- Border for image -->
-
-        <FrameLayout
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/image_border">
-
-            <!-- Chosen Photo -->
             <ImageView
-                android:id="@+id/image_chosen"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:scaleType="centerCrop" />
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_upload" />
 
-        </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Photo to Upload"
+                android:textColor="#2A2A2A"
+                android:textSize="16sp"
+                android:paddingTop="12dp"
+                android:textStyle="bold" />
 
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="#33000000" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Supported format: JPG, PNG"
+                android:textColor="#808080"
+                android:textSize="13sp"
+                android:paddingTop="4dp" />
+        </LinearLayout>
 
-        <!-- Item Name Label -->
+        <!-- Selected Image Preview -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:text="Item Name"
-            android:textStyle="bold"/>
+            android:text="Preview"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:textSize="15sp" />
 
-        <!-- Item Name EditText -->
+        <ImageView
+            android:id="@+id/image_chosen"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_bg"
+            android:scaleType="centerCrop" />
+
+        <!-- Item Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item Name"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:textSize="15sp" />
+
         <EditText
             android:id="@+id/edit_item_name"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="20dp"
-            android:inputType="textAutoComplete"
-            android:hint="Enter item name" />
+            android:background="@drawable/rounded_edittext"
+            android:paddingHorizontal="12dp"
+            android:hint="e.g. Electronics Kit"
+            android:textColor="#000000"
+            android:textColorHint="#999999" />
 
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="#33000000" />
-
-        <!-- Price Per Day Label -->
+        <!-- Price Per Day -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
             android:text="Price Per Day"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textSize="15sp" />
 
-        <!-- Price Per Day EditText (digits only) -->
         <EditText
             android:id="@+id/edit_price_per_day"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="20dp"
-            android:inputType="number"
-            android:hint="Enter price per day" />
+            android:background="@drawable/rounded_edittext"
+            android:paddingHorizontal="12dp"
+            android:hint="€5.00"
+            android:inputType="numberDecimal"
+            android:textColor="#000000"
+            android:textColorHint="#999999" />
 
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="#33000000" />
-
-        <!-- Description Label -->
+        <!-- Description -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
             android:text="Description"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textSize="15sp" />
 
-        <!-- Description EditText -->
         <EditText
             android:id="@+id/edit_description"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="20dp"
-            android:hint="Enter description"
-            android:minLines="3"
+            android:layout_height="120dp"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:hint="Briefly describe your item..."
             android:gravity="top"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:textColor="#000000"
+            android:textColorHint="#999999" />
 
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="#33000000" />
-
-        <!-- Category Label -->
+        <!-- Category -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
             android:text="Category"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textSize="15sp" />
 
-        <!-- Category Spinner -->
         <Spinner
             android:id="@+id/spinner_category"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginBottom="20dp"/>
+            android:background="@drawable/rounded_spinner"
+            android:paddingHorizontal="12dp" />
 
+        <!-- Progress Bar -->
         <ProgressBar
             android:id="@+id/progress_bar"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:visibility="gone" />
 
+        <!-- Upload Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_final_upload"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="40dp"
-            android:backgroundTint="@color/dark_green"
+            android:layout_height="48dp"
+            android:layout_marginTop="32dp"
+            android:text="Upload Item"
             android:textStyle="bold"
-            android:text="Upload Item" />
-
+            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/dark_green"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            app:cornerRadius="12dp"
+            style="@style/Widget.MaterialComponents.Button" />
 
     </LinearLayout>
 
