@@ -59,7 +59,7 @@ public class entryActivity extends AppCompatActivity {
                         mainHandler.postDelayed(() -> {
                             startActivity(new Intent(entryActivity.this, LoginPage.class));
                             finish();
-                        }, 3000);
+                        }, 1000);
                     } else {
                         Log.d("entryActivity", "Database NOT reachable. Retrying in 2 seconds...");
                         retryPingWithDelay();

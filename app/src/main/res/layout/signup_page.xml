@@ -94,12 +94,14 @@
             android:textColorHint="#8D6E63"/>
 
         <!-- Sign-Up Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/login_button_gradient"
+            app:backgroundTint="@null"
+            app:strokeColor="@null"
             android:padding="12dp"
             android:text="Sign Up"
             android:textColor="@android:color/white"

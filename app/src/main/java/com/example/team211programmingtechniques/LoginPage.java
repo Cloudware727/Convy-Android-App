@@ -1,6 +1,8 @@
 package com.example.team211programmingtechniques;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,60 +38,72 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_page);
 
-        TextView tv_sign_up = findViewById(R.id.tv_sign_up);  // Jumps to SignUpPage when clicked
-        tv_sign_up.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginPage.this, SignUpPage.class);
-            startActivity(intent);
-        });
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        boolean isLoggedIn = prefs .getBoolean("IsLoggedIn", false);
+        SharedPreferences.Editor editor = prefs.edit();
 
-        EditText et_username = findViewById(R.id.et_username);
-        EditText et_password = findViewById(R.id.et_password);
-        Button btn_login = findViewById(R.id.btn_login);
+        if (isLoggedIn) {
+            startActivity(new Intent(LoginPage.this, MainActivity.class));
+        }
+        else{
+                setContentView(R.layout.login_page);
 
-        btn_login.setOnClickListener(v -> {
-            String username = et_username.getText().toString().trim();
-            String password = et_password.getText().toString().trim();
-            String hashedpassword = hashPassword(password);
-
-
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            new Thread(() -> {
-                DBObject db = new DBObject(this);
-                String response = db.sendGetRequestString(
-                        "https://studev.groept.be/api/a24pt211/CheckLoginData/" + username + "/" + hashedpassword
-                );
-
-                response = response.trim();
-                int matchFound = 0;
-
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject obj = jsonArray.getJSONObject(0);
-                    matchFound = obj.getInt("match_found");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                int finalMatchFound = matchFound;
-                String finalResponse = response;
-                runOnUiThread(() -> {
-                    if (finalMatchFound == 1) {
-                        // To store username for later use
-                        getSharedPreferences("user_prefs", MODE_PRIVATE).edit().putString("username", username).apply();
-                        Toast.makeText(LoginPage.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginPage.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                    }
+                TextView tv_sign_up = findViewById(R.id.tv_sign_up);  // Jumps to SignUpPage when clicked
+                tv_sign_up.setOnClickListener(v -> {
+                    Intent intent = new Intent(LoginPage.this, SignUpPage.class);
+                    startActivity(intent);
                 });
-            }).start();
-        });
+
+                EditText et_username = findViewById(R.id.et_username);
+                EditText et_password = findViewById(R.id.et_password);
+                Button btn_login = findViewById(R.id.btn_login);
+
+                btn_login.setOnClickListener(v -> {
+                    String username = et_username.getText().toString().trim();
+                    String password = et_password.getText().toString().trim();
+                    String hashedpassword = hashPassword(password);
+
+
+                    if (username.isEmpty() || password.isEmpty()) {
+                        Toast.makeText(LoginPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    new Thread(() -> {
+                        DBObject db = new DBObject(this);
+                        String response = db.sendGetRequestString(
+                                "https://studev.groept.be/api/a24pt211/CheckLoginData/" + username + "/" + hashedpassword
+                        );
+
+                        response = response.trim();
+                        int matchFound = 0;
+
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject obj = jsonArray.getJSONObject(0);
+                            matchFound = obj.getInt("match_found");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        int finalMatchFound = matchFound;
+                        runOnUiThread(() -> {
+                            if (finalMatchFound == 1) {
+                                // To store username for later use
+                                getSharedPreferences("user_prefs", MODE_PRIVATE).edit().putString("username", username).apply();
+                                Toast.makeText(LoginPage.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                                editor.putBoolean("IsLoggedIn", true);
+                                editor.apply();
+                                Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                            } else {
+                                Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }).start();
+                });
+            }
+        }
     }
-}

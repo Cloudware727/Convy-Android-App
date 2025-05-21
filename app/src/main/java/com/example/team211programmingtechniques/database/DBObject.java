@@ -4,6 +4,7 @@ package com.example.team211programmingtechniques.database;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.team211programmingtechniques.RentItem;
@@ -38,6 +40,7 @@ public class DBObject {
     final String DBUrl;
     // Volley-needed objects
     private RequestQueue requestQ;
+    String apiKey = "AIzaSyAs8FEIso6r09Vy6MlVcyMaSOqY1b0dQts";
     private final Context context;
     public DBObject(Context context) {
         this.DBUrl = "https://studev.groept.be/api/a24pt211";
@@ -163,6 +166,7 @@ public class DBObject {
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject obj = result.getJSONObject(i);
 
+                        int id = obj.getInt("item_id");
                         String title = obj.getString("item_name");
                         String description = obj.getString("description");
                         int price = obj.getInt("price_per_day");
@@ -175,7 +179,7 @@ public class DBObject {
                         byte[] imageBytes = Base64.decode(base64Photo, Base64.DEFAULT);
                         Bitmap photo = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 
-                        RentItem item = new RentItem(title,photo, price, phone, location, description, category);
+                        RentItem item = new RentItem(id,title,photo, price, phone, location, description, category);
                         rentItems.add(item);
                     }
                     // Success: return parsed list
@@ -194,10 +198,80 @@ public class DBObject {
             }
         });
     }
+    public void CheckIfUserIsAccepted(DBCallback<Boolean> callback,int id ){
+        String username =context.getSharedPreferences("user_prefs",Context.MODE_PRIVATE)
+                .getString("username", null);
+        String ItemEnd = "/CheckIfUserIsAccepted/";
+        String SendUrl = DBUrl + ItemEnd + username + "/"+id;
 
+        volleyGETRequest(SendUrl, new VolleyCallback() {
 
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                try {
+                    if (result == null || result.length() == 0) {
+                        // No match found: not accepted
+                        callback.onSuccessDB(false);
+                        return;
+                    }
 
+                    JSONObject obj = result.getJSONObject(0);
+                    int status = obj.optInt("status", 0); // Default to 0 if key missing
+                    callback.onSuccessDB(status == 1);
 
+                } catch (JSONException e) {
+                    Log.e("Database", "JSON Parsing Error", e);
+                    callback.onSuccessDB(false);
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+                Log.e("Volley", "Error: " + error);
+            }
+        });
+    }
+
+    public void getDistanceBetween(String origin, String destination, DBCallback<String> callback) {
+        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" +
+               Uri.encode(origin) + "&destinations=" + Uri.encode(destination)+
+                "&key=" + apiKey;
+        if(origin == null || origin.isEmpty()){
+            callback.onSuccessDB("Please set your location");
+            return;
+        }
+
+        volleyGETJsonObject(url, new VolleyCallbackObject() {
+            @Override
+            public void onSuccessVolley(JSONObject response) {
+                Log.e("DistanceAPI", "Raw response: " + response.toString());
+                try {
+                    JSONObject element = response.getJSONArray("rows")
+                            .getJSONObject(0)
+                            .getJSONArray("elements")
+                            .getJSONObject(0);
+
+                    if (!element.getString("status").equals("OK")) {
+                        callback.onSuccessDB("N/A");
+                        return;
+                    }
+
+                    String distance = element.getJSONObject("distance").getString("text");
+                    callback.onSuccessDB(distance);
+                } catch (Exception e) {
+                    Log.e("DistanceError", "Failed to parse distance", e);
+                    callback.onSuccessDB("N/A");
+                }
+
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
 
     /*
     /--------------------------------------------------------------------------------------------------------------/
@@ -300,4 +374,14 @@ public class DBObject {
         };
         requestQ.add(submitRequest);
     }
+
+    private void volleyGETJsonObject(String url, VolleyCallbackObject callback) {
+        requestQ = Volley.newRequestQueue(context);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> callback.onSuccessVolley(response),
+                error -> callback.onErrorVolley(error.getLocalizedMessage())
+        );
+        requestQ.add(request);
+    }
+
 }

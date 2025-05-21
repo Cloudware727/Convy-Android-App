@@ -1,5 +1,6 @@
 package com.example.team211programmingtechniques;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class AccountFragment extends Fragment {
         email = v.findViewById(R.id.tvEmail);
         phoneNum = v.findViewById(R.id.tvPhone);
         location = v.findViewById(R.id.tvLocation);
+
+
         // Set default text
         userNameTV.setText("Hello, " + username);
         firstName.setText("...");
@@ -88,7 +91,10 @@ public class AccountFragment extends Fragment {
                         phoneNum.setText(result[4]);
                     }
                     if (!result[4].equals("null")) {
-                        location.setText(result[5]);
+                        location.setText(result[4]);
+                        String locationText = location.getText().toString();
+                        requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE).edit().putString("Location",locationText).apply();
+
                     }
 
                 } else {

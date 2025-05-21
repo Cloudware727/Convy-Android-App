@@ -3,7 +3,7 @@ package com.example.team211programmingtechniques;
 import android.graphics.Bitmap;
 
 public class RentItem {
-    private String item_id;
+    private int item_id;
     private String item_title;
     private Bitmap photo;
     private int price;
@@ -11,8 +11,10 @@ public class RentItem {
     private String location;
     private String description;
     private String category;
+    private Boolean isAccepted;
+    private String Distance;
 
-    public RentItem(String item_title, Bitmap photo, int price, String number, String location, String description, String category) {
+    public RentItem(int item_id, String item_title, Bitmap photo, int price, String number, String location, String description, String category) {
         this.item_id = item_id;
         this.item_title = item_title;
         this.photo = photo;
@@ -32,4 +34,13 @@ public class RentItem {
     public String getLocation() { return location; }
     public String getDescription(){return description;}
     public String getCategory(){return category;}
+    public Boolean getIsAccepted(){return isAccepted;}
+    public int getItem_id(){return item_id;}
+    public String getDistance(){return Distance;}
+
+    // Setter
+    public void setIsAccepted(Boolean accepted){isAccepted = accepted;}
+    public void setDistance(String dist){Distance = dist;}
+
+
 }
