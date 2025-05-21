@@ -34,6 +34,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.team211programmingtechniques.RentItem;
+import com.example.team211programmingtechniques.RouteInfo;
 
 public class DBObject {
     // URLS
@@ -272,6 +273,44 @@ public class DBObject {
             }
         });
     }
+
+    public void getMapRoute(String origin, String destination, DBCallback<RouteInfo> callback) {
+        String url = "https://maps.googleapis.com/maps/api/directions/json?" +
+                "origin=" + Uri.encode(origin) +
+                "&destination=" + Uri.encode(destination) +
+                "&key=" + apiKey;
+
+        volleyGETJsonObject(url, new VolleyCallbackObject() {
+            @Override
+            public void onSuccessVolley(JSONObject response) {
+                try {
+                    JSONArray routes = response.getJSONArray("routes");
+                    if (routes.length() == 0) {
+                        callback.onSuccessDB(null);
+                        return;
+                    }
+
+                    JSONObject firstRoute = routes.getJSONObject(0);
+                    String polyline = firstRoute.getJSONObject("overview_polyline").getString("points");
+
+                    JSONObject leg = firstRoute.getJSONArray("legs").getJSONObject(0);
+                    String distance = leg.getJSONObject("distance").getString("text");
+                    String duration = leg.getJSONObject("duration").getString("text");
+
+                    callback.onSuccessDB(new RouteInfo(polyline, distance, duration));
+                } catch (Exception e) {
+                    Log.e("MapRouteError", "Failed to parse route", e);
+                    callback.onSuccessDB(null);
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
 
     /*
     /--------------------------------------------------------------------------------------------------------------/

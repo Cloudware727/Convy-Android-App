@@ -47,4 +47,6 @@ dependencies {
     // Extra dependencies added
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
     implementation("com.android.volley:volley:1.2.1")
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
+    implementation ("com.google.maps.android:android-maps-utils:2.3.0")
 }

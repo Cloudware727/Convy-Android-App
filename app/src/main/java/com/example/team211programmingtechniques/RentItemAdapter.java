@@ -126,6 +126,7 @@ public class RentItemAdapter extends RecyclerView.Adapter<RentItemAdapter.RentVi
             bundle.putString("category", item.getCategory());
             bundle.putString("description",item.getDescription());
             bundle.putBoolean("isAccepted",item.getIsAccepted());
+            bundle.putString("DestinationLocation",item.getLocation());
             detailsFragment.setArguments(bundle);
 
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, detailsFragment).addToBackStack(null).commit();
