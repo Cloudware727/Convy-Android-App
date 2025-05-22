@@ -2,6 +2,7 @@ package com.example.team211programmingtechniques.database;
 
 // Imports - Json related
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -153,10 +154,12 @@ public class DBObject {
             }
         });
     }
-
     public void GetItemDetails(DBCallback<List<RentItem>> callback) {
+        SharedPreferences prefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String username = prefs.getString("username", "default");
+
         String ItemSuffix = "/GetLast10Items";
-        String SendUrl = DBUrl + ItemSuffix;
+        String SendUrl = DBUrl + ItemSuffix + "/" +username;
 
         volleyGETRequest(SendUrl, new VolleyCallback() {
             @Override
@@ -409,6 +412,27 @@ public class DBObject {
                 callback.onErrorDB(error);
             }
         });
+    }
+
+    public void AddAnOffer(int id,String username,DBCallback<Boolean> callback){
+        String url = DBUrl + "/AddAnOffer/" + id + "/" + username;
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray response) {
+                if (response.length() == 0) {
+                    callback.onSuccessDB(true);  // success
+                } else {
+                    callback.onSuccessDB(false); // something unexpected returned
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+
+
     }
 
 

@@ -118,6 +118,7 @@ public class RentItemAdapter extends RecyclerView.Adapter<RentItemAdapter.RentVi
         holder.itemView.setOnClickListener(v ->{
             RentDetailsFragment detailsFragment = new RentDetailsFragment();
             Bundle bundle = new Bundle();
+            bundle.putInt("item_id",item.getItem_id());
             bundle.putString("item_name",item.getItemTitle());
             bundle.putInt("price",item.getPrice());
             bundle.putString("number",item.getNumber());
