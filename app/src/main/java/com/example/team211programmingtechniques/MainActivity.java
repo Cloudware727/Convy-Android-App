@@ -1,5 +1,7 @@
 package com.example.team211programmingtechniques;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Login Check - Redirect to LoginPage if not logged in
+        SharedPreferences sp = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        boolean isLoggedIn = sp.getBoolean("IsLoggedIn", false);
+        if (!isLoggedIn) {
+            Intent intent = new Intent(this, LoginPage.class);
+            startActivity(intent);
+            finish(); // Finish MainActivity so user can't go back to it
+            return;
+        }
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new RentFragment());

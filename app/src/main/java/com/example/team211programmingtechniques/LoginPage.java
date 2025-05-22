@@ -40,11 +40,12 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        boolean isLoggedIn = prefs .getBoolean("IsLoggedIn", false);
+        boolean isLoggedIn = prefs.getBoolean("IsLoggedIn", false);
         SharedPreferences.Editor editor = prefs.edit();
 
         if (isLoggedIn) {
             startActivity(new Intent(LoginPage.this, MainActivity.class));
+            finish();
         }
         else{
                 setContentView(R.layout.login_page);

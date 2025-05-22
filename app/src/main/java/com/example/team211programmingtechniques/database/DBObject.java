@@ -311,6 +311,106 @@ public class DBObject {
         });
     }
 
+    // Update First Name
+    public void changeFirstName(String firstName, String username, DBCallback<Boolean> callback) {
+        String url = DBUrl + "/changeFirstName/" + firstName + "/" + username;
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray response) {
+                if (response.length() == 0) {
+                    callback.onSuccessDB(true);  // success
+                } else {
+                    callback.onSuccessDB(false); // something unexpected returned
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+    // Update Last Name
+    public void changeLastName(String lastName, String username, DBCallback<Boolean> callback) {
+        String url = DBUrl + "/changeLastName/" + lastName + "/" + username;
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray response) {
+                if (response.length() == 0) {
+                    callback.onSuccessDB(true);  // success
+                } else {
+                    callback.onSuccessDB(false); // something unexpected returned
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+    // Update Email
+    public void changeEmail(String email, String username, DBCallback<Boolean> callback) {
+        String url = DBUrl + "/changeEmail/" + email + "/" + username;
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray response) {
+                if (response.length() == 0) {
+                    callback.onSuccessDB(true);  // success
+                } else {
+                    callback.onSuccessDB(false); // something unexpected returned
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+    // Update Phone
+    public void changePhone(String phoneNumber, String username, DBCallback<Boolean> callback) {
+        String url = DBUrl + "/changePhone/" + phoneNumber + "/" + username;
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray response) {
+                if (response.length() == 0) {
+                    callback.onSuccessDB(true);  // success
+                } else {
+                    callback.onSuccessDB(false); // something unexpected returned
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+    // Update Location
+    public void changeLocation(String location, String username, DBCallback<Boolean> callback) {
+        String url = DBUrl + "/changeLocation/" + location + "/" + username;
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray response) {
+                if (response.length() == 0) {
+                    callback.onSuccessDB(true);  // success
+                } else {
+                    callback.onSuccessDB(false); // something unexpected returned
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
 
     /*
     /--------------------------------------------------------------------------------------------------------------/

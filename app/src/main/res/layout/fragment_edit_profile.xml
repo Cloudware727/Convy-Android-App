@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CCFFFFFF"
+    android:padding="16dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_card_background"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Profile"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#2B7A2B"
+                android:layout_marginBottom="24dp" />
+
+            <!-- First Name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_first_name"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_edittext"
+                android:paddingHorizontal="12dp"
+                android:hint="New First Name"
+                android:textColor="#000000"
+                android:textColorHint="#999999"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Last Name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Name"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_last_name"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_edittext"
+                android:paddingHorizontal="12dp"
+                android:hint="New Last Name"
+                android:textColor="#000000"
+                android:textColorHint="#999999"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Email -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_email"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_edittext"
+                android:paddingHorizontal="12dp"
+                android:hint="New Email"
+                android:inputType="textEmailAddress"
+                android:textColor="#000000"
+                android:textColorHint="#999999"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Phone -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_phone"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_edittext"
+                android:paddingHorizontal="12dp"
+                android:hint="New Phone Number"
+                android:inputType="phone"
+                android:textColor="#000000"
+                android:textColorHint="#999999"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Location -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_location"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_edittext"
+                android:paddingHorizontal="12dp"
+                android:hint="New location"
+                android:inputType="phone"
+                android:textColor="#000000"
+                android:textColorHint="#999999"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Submit Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_submit_changes"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Submit Changes"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:backgroundTint="@color/dark_green"
+                app:cornerRadius="12dp"
+                style="@style/Widget.MaterialComponents.Button" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
