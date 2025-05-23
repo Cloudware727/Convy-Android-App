@@ -61,7 +61,7 @@ public class OfferDetailsFragment extends Fragment{
         // Logic for button color
         if (status) { // Status = 1 means it is rented out
             reConvyBtn.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.gray));
-            reConvyBtn.setFocusable(false);
+            reConvyBtn.setClickable(false);
         }
         else {
             reConvyBtn.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.dark_green));
@@ -90,13 +90,12 @@ public class OfferDetailsFragment extends Fragment{
 
                     // Accept Button
                     Button acceptBtn = new Button(context);
-                    acceptBtn.setText("Accept");
-                    acceptBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.dark_green));
+                    acceptBtn.setText("Loading...");
                     acceptBtn.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-                    acceptBtn.setOnClickListener(v -> {
-                        Toast.makeText(context, "Accepted: " + username, Toast.LENGTH_SHORT).show();
-                        // TODO: Implement accept logic
-                    });
+                    acceptBtn.setLayoutParams(new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                    ));
+                    acceptBtn.setOnClickListener(v -> acceptOffer(username, acceptBtn));
 
                     // Add views to offerRow
                     offerRow.addView(usernameTV);
@@ -104,6 +103,34 @@ public class OfferDetailsFragment extends Fragment{
 
                     // Add offerRow to container
                     offersContainer.addView(offerRow);
+
+                    // Check offer status and configure button
+                    db.returnOfferStatus(itemID, username, new DBCallback<Integer>() {
+                        @Override
+                        public void onSuccessDB(Integer offerStatus) {
+                            if (offerStatus == 0) {
+                                // Offer has not been accepted
+                                acceptBtn.setText("Accept");
+                                acceptBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.dark_green));
+                                acceptBtn.setClickable(true);
+                            } else {
+                                // Offer already accepted
+                                acceptBtn.setText("Accepted");
+                                acceptBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray));
+                                acceptBtn.setClickable(false);
+                            }
+                        }
+
+                        @Override
+                        public void onErrorDB(String error) {
+                            Toast.makeText(context, "Error loading status for " + username, Toast.LENGTH_SHORT).show();
+                            Log.e("OfferStatus", "Status fetch failed: " + error);
+                            // Fallback: disable the button if status fails
+                            acceptBtn.setText("Unavailable");
+                            acceptBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray));
+                            acceptBtn.setClickable(false);
+                        }
+                    });
                 }
             }
 
@@ -114,8 +141,59 @@ public class OfferDetailsFragment extends Fragment{
             }
         });
 
-
         return view;
     };
 
+    // Method for button when accepting offers
+    private void acceptOffer(String username, Button acceptBtn) {
+        Log.d("OfferDetails", "acceptOffer called for username: " + username);
+
+        acceptBtn.setEnabled(false);
+        DBObject db = new DBObject(requireContext());
+
+        db.updateOfferStatus(1, itemID, username, new DBCallback<Void>() {
+            @Override
+            public void onSuccessDB(Void unused) {
+                Log.d("OfferDetails", "updateOfferStatus success");
+                db.updateItemStatus(1, itemID, new DBCallback<String>() {
+                    @Override
+                    public void onSuccessDB(String message) {
+                        Log.d("OfferDetails", "updateItemStatus success");
+                        db.deleteOtherOffers(itemID, username, new DBCallback<String>() {
+                            @Override
+                            public void onSuccessDB(String message) {
+                                Log.d("OfferDetails", "deleteOtherOffers success");
+                                Toast.makeText(requireContext(), "Offer accepted!", Toast.LENGTH_SHORT).show();
+
+                                acceptBtn.setText("Accepted");
+                                acceptBtn.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.gray));
+                                acceptBtn.setClickable(false);
+                            }
+
+                            @Override
+                            public void onErrorDB(String error) {
+                                Log.e("OfferDetails", "deleteOtherOffers error: " + error);
+                                Toast.makeText(requireContext(), "Failed to delete other offers: " + error, Toast.LENGTH_SHORT).show();
+                                acceptBtn.setEnabled(true);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onErrorDB(String error) {
+                        Log.e("OfferDetails", "updateItemStatus error: " + error);
+                        Toast.makeText(requireContext(), "Failed to update item status: " + error, Toast.LENGTH_SHORT).show();
+                        acceptBtn.setEnabled(true);
+                    }
+                });
+            }
+
+            @Override
+            public void onErrorDB(String error) {
+                Log.e("OfferDetails", "updateOfferStatus error: " + error);
+                Toast.makeText(requireContext(), "Failed to update offer status: " + error, Toast.LENGTH_SHORT).show();
+                acceptBtn.setEnabled(true);
+            }
+        });
+    }
 }

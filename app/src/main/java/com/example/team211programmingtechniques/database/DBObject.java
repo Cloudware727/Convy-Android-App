@@ -510,6 +510,90 @@ public class DBObject {
 
     }
 
+    // For the rendering of the buttons
+    public void returnOfferStatus(int itemID, String username, DBCallback<Integer> callback) {
+        String suffix = "/returnOfferStatus/" + itemID + "/" + username;
+        String getURL = DBUrl + suffix;
+
+        volleyGETRequest(getURL, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                try {
+                    if (result.length() > 0) {
+                        JSONObject jObject = result.getJSONObject(0);
+                        int status = jObject.getInt("status");  // assuming status is returned like this
+                        callback.onSuccessDB(status);
+                    } else {
+                        callback.onErrorDB("No data found");
+                    }
+                } catch (JSONException e) {
+                    callback.onErrorDB(e.getMessage());
+                    Log.e("Database", "JSON Error: " + e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+                Log.e("Volley", "Error: " + error);
+            }
+        });
+    }
+
+    // Updates the status column for a certain item in the offers table
+    public void updateOfferStatus(int status, int itemID, String username, DBCallback<Void> callback) {
+        String suffix = "/updateOfferStatus/" + status + "/" + itemID + "/" + username;
+        String getURL = DBUrl + suffix;
+        volleyGETRequest(getURL, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                callback.onSuccessDB(null);  // or pass any needed response
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+
+    // Updates the status column for a certain item in the item table
+    public void updateItemStatus(int status, int itemID, DBCallback<String> callback) {
+        String suffix = "/updateItemStatus/" + status + "/" + itemID;
+        String url = DBUrl + suffix;
+
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                callback.onSuccessDB("Item status updated");
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+    // Deletes all other rows in the offers table for a given item, except for a given item-username pair
+    public void deleteOtherOffers(int itemID, String username, DBCallback<String> callback) {
+        String suffix = "/deleteOtherOffers/" + itemID + "/" + username;
+        String url = DBUrl + suffix;
+
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                callback.onSuccessDB("Other offers deleted");
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
     /*
     /--------------------------------------------------------------------------------------------------------------/
     */

@@ -149,8 +149,8 @@ public class AccountFragment extends Fragment {
                     SharedPreferences.Editor spEditor1 = sp1.edit();
                     SharedPreferences.Editor spEditor2 = sp2.edit();
 
-                    spEditor1.putBoolean("IsLoggedIn", false);
-                    spEditor2.remove("username");
+                    spEditor1.clear();
+                    spEditor2.clear();
 
                     spEditor1.apply();
                     spEditor2.apply();
