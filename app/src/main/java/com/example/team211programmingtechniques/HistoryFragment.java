@@ -64,7 +64,7 @@ public class HistoryFragment extends Fragment {
             selected.setStrokeWidth(4);
 
             getChildFragmentManager().beginTransaction()
-                    .replace(R.id.history_fragment_container, new RentedFragment())
+                    .replace(R.id.history_fragment_container, new RentedHistoryFragment())
                     .commit();
         });
 
