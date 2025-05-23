@@ -79,12 +79,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Placeholder for future fragment content -->
+        <!-- Fragment container -->
         <FrameLayout
-            android:id="@+id/fragmentContainer"
+            android:id="@+id/history_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"/>
+            android:layout_height="match_parent" />
+
         
     </com.google.android.material.card.MaterialCardView>
 

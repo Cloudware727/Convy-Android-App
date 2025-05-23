@@ -26,6 +26,17 @@ public class HistoryFragment extends Fragment {
         btnMyItems = view.findViewById(R.id.btnMyItems);
         btnRentedItems = view.findViewById(R.id.btnRentedItems);
 
+        // Set default fragment to MyHistoryFragment when HistoryFragment loads
+        if (savedInstanceState == null) {
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.history_fragment_container, new MyHistoryFragment())
+                    .commit();
+
+            // Optional: Apply selection styling to the "My Items" button
+            btnMyItems.setStrokeColorResource(android.R.color.darker_gray);
+            btnMyItems.setStrokeWidth(4);
+        }
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +48,17 @@ public class HistoryFragment extends Fragment {
             }
         };
 
-        btnMyItems.setOnClickListener(listener);
+        btnMyItems.setOnClickListener(v -> {
+            resetButtonStyles();
+            MaterialButton selected = (MaterialButton) v;
+            selected.setStrokeColorResource(android.R.color.darker_gray);
+            selected.setStrokeWidth(4);
+
+            // Load MyHistoryFragment
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.history_fragment_container, new MyHistoryFragment())
+                    .commit();
+        });
         btnRentedItems.setOnClickListener(listener);
 
         return view;  // Return the inflated view

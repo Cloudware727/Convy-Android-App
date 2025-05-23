@@ -34,6 +34,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.team211programmingtechniques.HistoryMyItem;
 import com.example.team211programmingtechniques.RentItem;
 import com.example.team211programmingtechniques.RouteInfo;
 
@@ -199,6 +200,52 @@ public class DBObject {
             public void onErrorVolley(String error) {
                 callback.onErrorDB(error);
                 Log.e("Volley", "Error: " + error);
+            }
+        });
+    }
+
+    public void getAllUserItems(String username, DBCallback<List<HistoryMyItem>> callback) {
+        String suffix = "/getAllUserItems/" + username;
+        String getURL = DBUrl + suffix;
+
+        volleyGETRequest(getURL, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                try {
+                    List<HistoryMyItem> historyMyItemList = new ArrayList<>();
+
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jObject = result.getJSONObject(i);
+                        // retrieve all data
+                        int id = jObject.getInt("item_id");
+                        String name = jObject.getString("item_name");
+                        String description = jObject.getString("description");
+                        int price = jObject.getInt("price_per_day");
+                        String dateListed = jObject.getString("date_listed");
+                        String category = jObject.getString("category_name");
+                        boolean status = jObject.getInt("status") == 1;
+
+                        // Decode Base64 photo
+                        String base64Photo = jObject.getString("photos");
+                        byte[] imageBytes = Base64.decode(base64Photo, Base64.DEFAULT);
+                        Bitmap photo = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        // create new item
+                        HistoryMyItem newItem = new HistoryMyItem(id, name, description, price, dateListed, category, status, photo);
+                        historyMyItemList.add(newItem);
+                    }
+
+                    callback.onSuccessDB(historyMyItemList);
+
+                } catch (JSONException e) {
+                    callback.onErrorDB(e.getMessage());
+                    Log.e("Database", "JSON Error" + e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+                Log.e("Volley", "Error" + error);
             }
         });
     }
