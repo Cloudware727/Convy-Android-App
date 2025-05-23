@@ -133,7 +133,7 @@ public class RentDetailsFragment extends Fragment {
                     }
                     @Override
                     public void onErrorDB(String error) {
-                        Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "You can only send a maximum of one request per item!!!", Toast.LENGTH_SHORT).show();
                     }
                 });
             });

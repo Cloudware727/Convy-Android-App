@@ -632,6 +632,30 @@ public class DBObject {
     }
 
 
+    public void SearchQuery(String search,DBCallback<List<Integer>> callback) {
+        String url = DBUrl + "/SearchBarQuery/" + search;
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray response) {
+                    List<Integer> itemIds = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            itemIds.add(obj.getInt("item_id"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                }
+                callback.onSuccessDB(itemIds);
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
     /*
     /--------------------------------------------------------------------------------------------------------------/
     */

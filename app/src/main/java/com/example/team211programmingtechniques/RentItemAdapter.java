@@ -19,17 +19,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.team211programmingtechniques.database.DBCallback;
 import com.example.team211programmingtechniques.database.DBObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RentItemAdapter extends RecyclerView.Adapter<RentItemAdapter.RentViewHolder> {
 
     private List<RentItem> rentItemList;
+    private List<RentItem> fullList;
     private Context context;
 
     // Constructor to receive data
     public RentItemAdapter(Context context, List<RentItem> rentItemList) {
         this.context = context;
         this.rentItemList = rentItemList;
+        this.fullList = new ArrayList<>(rentItemList);
     }
 
     // 1. ViewHolder: holds view references for recycling
@@ -143,6 +146,38 @@ public class RentItemAdapter extends RecyclerView.Adapter<RentItemAdapter.RentVi
 
     public void setRentItems(List<RentItem> rentItemList) {
         this.rentItemList = rentItemList;
+        this.fullList = new ArrayList<>(rentItemList);
         notifyDataSetChanged();
     }
+
+    public void filterByItemIds(List<Integer> ids) {
+        if (ids == null) {
+            rentItemList = new ArrayList<>(fullList);
+        } else {
+            List<RentItem> filtered = new ArrayList<>();
+            for (RentItem item : fullList) {  // Use fullList here
+                if (ids.contains(item.getItem_id())) {
+                    filtered.add(item);
+                }
+            }
+            rentItemList = filtered;
+        }
+        notifyDataSetChanged();
+    }
+
+    public void filterByCategoryStrings(List<String> categories) {
+        if (categories.isEmpty()) {
+            rentItemList = new ArrayList<>(fullList); // Show all
+        } else {
+            List<RentItem> filtered = new ArrayList<>();
+            for (RentItem item : fullList) {
+                if (categories.contains(item.getCategory())) {
+                    filtered.add(item);
+                }
+            }
+            rentItemList = filtered;
+        }
+        notifyDataSetChanged(); // Refresh the RecyclerView
+    }
+
 }
