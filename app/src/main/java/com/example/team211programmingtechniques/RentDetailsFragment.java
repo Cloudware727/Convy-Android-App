@@ -79,6 +79,7 @@ public class RentDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rent_details, container, false);
         Context context =  requireContext();
+        DBObject dbObject = new DBObject(context);
 
         // Find views
         imageView = view.findViewById(R.id.detailImage);
@@ -114,6 +115,29 @@ public class RentDetailsFragment extends Fragment {
         mapView.getMapAsync(gMap -> {
             googleMap = gMap;
 
+
+            SharedPreferences prefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+            String userLocation = prefs.getString("Location", null);
+            String username = prefs.getString("username","default");
+
+            contactButton.setOnClickListener(v -> {
+                dbObject.AddAnOffer(itemiD,username,new DBCallback<Boolean>() {
+                    @Override
+                    public void onSuccessDB(Boolean result) {
+                        if(result) {
+                            Toast.makeText(requireContext(), "Offer has been sent", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(requireContext(), "Failed to send offer, please try again later", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onErrorDB(String error) {
+                        Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+
             if (!isAccepted) {
                 // Just show static map centered on item location
                 Geocoder geocoder = new Geocoder(context, Locale.getDefault());
@@ -133,9 +157,6 @@ public class RentDetailsFragment extends Fragment {
             }
 
             // If accepted: show pins and route
-            SharedPreferences prefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-            String userLocation = prefs.getString("Location", null);
-            String username = prefs.getString("username","default");
 
             Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             LatLng userLatLng = null;
@@ -164,7 +185,7 @@ public class RentDetailsFragment extends Fragment {
             LatLng finalUserLatLng = userLatLng;
             LatLng finalDestLatLng = destLatLng;
 
-            DBObject dbObject = new DBObject(context);
+
             dbObject.getMapRoute(userLocation, location, new DBCallback<RouteInfo>() {
                 @Override
                 public void onSuccessDB(RouteInfo route) {
@@ -202,23 +223,6 @@ public class RentDetailsFragment extends Fragment {
                 } else {
                     Toast.makeText(requireContext(), "Missing origin or destination", Toast.LENGTH_SHORT).show();
                 }
-            });
-            contactButton.setOnClickListener(v -> {
-                dbObject.AddAnOffer(itemiD,username,new DBCallback<Boolean>() {
-                    @Override
-                    public void onSuccessDB(Boolean result) {
-                        if(result) {
-                            Toast.makeText(requireContext(), "Offer has been sent", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(requireContext(), "Failed to send offer, please try again later", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    @Override
-                    public void onErrorDB(String error) {
-                        Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
-                    }
-                });
             });
         });
 

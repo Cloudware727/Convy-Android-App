@@ -27,13 +27,24 @@
             android:inputType="text" />
 
         <ImageButton
+            android:id="@+id/searchButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_search"
+            android:contentDescription="Search"
+            app:tint="#1B5E20" />
+
+        <ImageButton
             android:id="@+id/filterButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="12dp"
             android:src="@android:drawable/ic_menu_sort_by_size"
             android:contentDescription="Filter"
-            app:tint="#1B5E20" />
+            app:tint="#1B5E20"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <!-- Card List -->
