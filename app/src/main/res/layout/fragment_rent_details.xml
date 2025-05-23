@@ -162,16 +162,18 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_contact"
-                    android:layout_width="match_parent"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="@color/dark_green"
+                    android:background="@drawable/rounded_button"
                     app:backgroundTint="@null"
                     app:strokeColor="@null"
                     android:padding="12dp"
-                    android:text="Contact Lender"
+                    android:text="Send an Offer"
+                    app:cornerRadius ="12dp"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    style="@style/Widget.MaterialComponents.Button"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
