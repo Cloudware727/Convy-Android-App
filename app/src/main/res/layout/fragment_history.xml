@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:background="#F8F8F8">
 
-    <!-- Rounded container for the two buttons -->
+    <!-- Rounded container for the buttons -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/buttonContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="8dp"
@@ -32,10 +32,11 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMyItems"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:paddingHorizontal="24dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:paddingHorizontal="0dp"
                 android:text="My Items"
                 android:gravity="center"
                 android:textAlignment="center"
@@ -48,11 +49,31 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRentedItems"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:gravity="center"
-                android:paddingHorizontal="24dp"
-                android:text="Rented Items"
+                android:paddingHorizontal="0dp"
+                android:text="Renting"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/dark_green"
+                app:cornerRadius="24dp"
+                app:strokeColor="@color/dark_green"
+                app:strokeWidth="2dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPreviouslyRented"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:gravity="center"
+                android:paddingHorizontal="0dp"
+                android:text="Rented"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 app:backgroundTint="@color/dark_green"
@@ -85,7 +106,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
