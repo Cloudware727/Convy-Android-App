@@ -656,6 +656,53 @@ public class DBObject {
         });
     }
 
+    public void getItemsForRenting(String username, DBCallback<List<RentItem>> callback) {
+        String suffix = "/GetItemsForRenting/" + username;
+        String getURL = DBUrl + suffix;
+
+        volleyGETRequest(getURL, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                try {
+                    List<RentItem> rentingItemList = new ArrayList<>();
+
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jObject = result.getJSONObject(i);
+
+                        int id = jObject.getInt("item_id");
+                        String name = jObject.getString("item_name");
+                        String description = jObject.getString("description");
+                        int price = (int) jObject.getDouble("price_per_day");
+                        String number = jObject.getString("phone_number");
+                        String location = jObject.getString("location");
+                        String category = jObject.getString("category_name");
+
+                        // Decode Base64 photo
+                        String base64Photo = jObject.getString("photos");
+                        byte[] imageBytes = Base64.decode(base64Photo, Base64.DEFAULT);
+                        Bitmap photo = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                        RentItem newItem = new RentItem(id, name, photo, price, number, location, description,category);
+                        rentingItemList.add(newItem);
+                    }
+
+                    callback.onSuccessDB(rentingItemList);
+
+                } catch (JSONException e) {
+                    callback.onErrorDB(e.getMessage());
+                    Log.e("Database", "JSON Error: " + e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+                Log.e("Volley", "Request Error: " + error);
+            }
+        });
+    }
+
+
     /*
     /--------------------------------------------------------------------------------------------------------------/
     */

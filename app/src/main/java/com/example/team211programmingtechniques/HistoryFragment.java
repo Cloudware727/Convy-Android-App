@@ -13,40 +13,27 @@ import com.google.android.material.button.MaterialButton;
 
 public class HistoryFragment extends Fragment {
 
-    private MaterialButton btnMyItems, btnRentedItems;
+    private MaterialButton btnMyItems, btnRentedItems, btnRentingItems;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        // Initialize buttons using the inflated view
         btnMyItems = view.findViewById(R.id.btnMyItems);
-        btnRentedItems = view.findViewById(R.id.btnRentedItems);
+        btnRentedItems = view.findViewById(R.id.btnPreviouslyRented);
+        btnRentingItems = view.findViewById(R.id.btnRenting);
 
-        // Set default fragment to MyHistoryFragment when HistoryFragment loads
+        // Load MyHistoryFragment by default
         if (savedInstanceState == null) {
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.history_fragment_container, new MyHistoryFragment())
                     .commit();
 
-            // Optional: Apply selection styling to the "My Items" button
             btnMyItems.setStrokeColorResource(android.R.color.darker_gray);
             btnMyItems.setStrokeWidth(4);
         }
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetButtonStyles();
-
-                MaterialButton selected = (MaterialButton) v;
-                selected.setStrokeColorResource(android.R.color.darker_gray); // Gray border
-                selected.setStrokeWidth(4);
-            }
-        };
 
         btnMyItems.setOnClickListener(v -> {
             resetButtonStyles();
@@ -54,14 +41,34 @@ public class HistoryFragment extends Fragment {
             selected.setStrokeColorResource(android.R.color.darker_gray);
             selected.setStrokeWidth(4);
 
-            // Load MyHistoryFragment
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.history_fragment_container, new MyHistoryFragment())
                     .commit();
         });
-        btnRentedItems.setOnClickListener(listener);
 
-        return view;  // Return the inflated view
+        btnRentingItems.setOnClickListener(v -> {
+            resetButtonStyles();
+            MaterialButton selected = (MaterialButton) v;
+            selected.setStrokeColorResource(android.R.color.darker_gray);
+            selected.setStrokeWidth(4);
+
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.history_fragment_container, new RentingFragment())
+                    .commit();
+        });
+
+        btnRentedItems.setOnClickListener(v -> {
+            resetButtonStyles();
+            MaterialButton selected = (MaterialButton) v;
+            selected.setStrokeColorResource(android.R.color.darker_gray);
+            selected.setStrokeWidth(4);
+
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.history_fragment_container, new RentedFragment())
+                    .commit();
+        });
+
+        return view;
     }
 
     private void resetButtonStyles() {
@@ -70,5 +77,8 @@ public class HistoryFragment extends Fragment {
 
         btnRentedItems.setStrokeColorResource(R.color.dark_green);
         btnRentedItems.setStrokeWidth(2);
+
+        btnRentingItems.setStrokeColorResource(R.color.dark_green);
+        btnRentingItems.setStrokeWidth(2);
     }
 }
