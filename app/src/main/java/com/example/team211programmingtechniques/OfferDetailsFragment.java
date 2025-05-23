@@ -22,10 +22,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.team211programmingtechniques.database.DBCallback;
 import com.example.team211programmingtechniques.database.DBObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class OfferDetailsFragment extends Fragment{
-    private String itemName;
+    private String itemName, myUsername;
     private Bitmap photo;
     private boolean status;
     private int itemID;
@@ -53,6 +56,9 @@ public class OfferDetailsFragment extends Fragment{
             status = getArguments().getBoolean("status");
             itemID = getArguments().getInt("itemID");
         }
+        myUsername = requireActivity()
+                .getSharedPreferences("user_prefs",requireActivity().MODE_PRIVATE)
+                .getString("username", null);
 
         // Set argument data to views
         photoIV.setImageBitmap(photo);
@@ -60,12 +66,12 @@ public class OfferDetailsFragment extends Fragment{
 
         // Logic for button color
         if (status) { // Status = 1 means it is rented out
-            reConvyBtn.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.gray));
-            reConvyBtn.setClickable(false);
-        }
-        else {
             reConvyBtn.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.dark_green));
             reConvyBtn.setFocusable(true);
+        }
+        else {
+            reConvyBtn.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.gray));
+            reConvyBtn.setClickable(false);
         }
 
         // Load offers and populate views
@@ -141,6 +147,9 @@ public class OfferDetailsFragment extends Fragment{
             }
         });
 
+        // Set click listener calls the method
+        reConvyBtn.setOnClickListener(v -> reConveyItem());
+
         return view;
     };
 
@@ -193,6 +202,83 @@ public class OfferDetailsFragment extends Fragment{
                 Log.e("OfferDetails", "updateOfferStatus error: " + error);
                 Toast.makeText(requireContext(), "Failed to update offer status: " + error, Toast.LENGTH_SHORT).show();
                 acceptBtn.setEnabled(true);
+            }
+        });
+    }
+    // Method for re-uploading an item into the market
+
+    private void reConveyItem() {
+        if (!status) {
+            Toast.makeText(requireContext(), "Item is not rented out.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Use array to hold renter username for inner class access
+        final String[] renterUsernameHolder = new String[1];
+        renterUsernameHolder[0] = null;
+
+        for (int i = 0; i < offersContainer.getChildCount(); i++) {
+            View row = offersContainer.getChildAt(i);
+            if (row instanceof LinearLayout) {
+                LinearLayout ll = (LinearLayout) row;
+                TextView usernameTV = (TextView) ll.getChildAt(0);
+                Button acceptBtn = (Button) ll.getChildAt(1);
+
+                if (acceptBtn.getText().toString().equals("Accepted")) {
+                    renterUsernameHolder[0] = usernameTV.getText().toString();
+                    break;
+                }
+            }
+        }
+
+        if (renterUsernameHolder[0] == null) {
+            Toast.makeText(requireContext(), "No accepted renter found.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DBObject dbObj = new DBObject(requireContext());
+        String lenderUsername = myUsername;
+
+        // Get today's date with SimpleDateFormat (API 24 compatible)
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String todayDate = sdf.format(new Date());
+
+        reConvyBtn.setEnabled(false);
+
+        dbObj.deleteCertainOffer(renterUsernameHolder[0], itemID, new DBCallback<String>() {
+            @Override
+            public void onSuccessDB(String message) {
+                dbObj.addTransaction(itemID, renterUsernameHolder[0], lenderUsername, todayDate, new DBCallback<String>() {
+                    @Override
+                    public void onSuccessDB(String message) {
+                        dbObj.updateItemStatus(0, itemID, new DBCallback<String>() {
+                            @Override
+                            public void onSuccessDB(String message) {
+                                Toast.makeText(requireContext(), "Item reconveyed successfully!", Toast.LENGTH_SHORT).show();
+                                reConvyBtn.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.gray));
+                                reConvyBtn.setClickable(false);
+                            }
+
+                            @Override
+                            public void onErrorDB(String error) {
+                                Toast.makeText(requireContext(), "Failed to update item status: " + error, Toast.LENGTH_SHORT).show();
+                                reConvyBtn.setEnabled(true);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onErrorDB(String error) {
+                        Toast.makeText(requireContext(), "Failed to add transaction: " + error, Toast.LENGTH_SHORT).show();
+                        reConvyBtn.setEnabled(true);
+                    }
+                });
+            }
+
+            @Override
+            public void onErrorDB(String error) {
+                Toast.makeText(requireContext(), "Failed to delete certain offer: " + error, Toast.LENGTH_SHORT).show();
+                reConvyBtn.setEnabled(true);
             }
         });
     }

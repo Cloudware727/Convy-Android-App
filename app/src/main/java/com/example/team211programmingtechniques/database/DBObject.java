@@ -594,6 +594,44 @@ public class DBObject {
         });
     }
 
+    // Deletes a certain offer within offers which has status == 1
+    public void deleteCertainOffer(String username, int itemID, DBCallback<String> callback) {
+        String suffix = "/deleteCertainOffer/" + username + "/" + itemID;
+        String url = DBUrl + suffix;
+
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                callback.onSuccessDB("Offer deleted");
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+    // Add an entry into transaction from the perspective of the lender
+    public void addTransaction(int itemID, String renter, String lender, String date, DBCallback<String> callback) {
+        // Note: the URL path as given is /addTransaction/item/renter/lender/date
+        String suffix = "/addTransaction/" + itemID + "/" + renter + "/" + lender + "/" + date;
+        String url = DBUrl + suffix;
+
+        volleyGETRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                callback.onSuccessDB("Transaction added");
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+            }
+        });
+    }
+
+
     /*
     /--------------------------------------------------------------------------------------------------------------/
     */
