@@ -461,7 +461,7 @@ public class DBObject {
         });
     }
 
-    public void AddAnOffer(int id,String username,DBCallback<Boolean> callback){
+    public void AddAnOffer(int id,String username,DBCallback<Boolean> callback) {
         String url = DBUrl + "/AddAnOffer/" + id + "/" + username;
         volleyGETRequest(url, new VolleyCallback() {
             @Override
@@ -478,10 +478,37 @@ public class DBObject {
                 callback.onErrorDB(error);
             }
         });
-
-
     }
 
+    // Return the offers based on a certain item id
+    public void returnOffers(int itemID, DBCallback<List<String>> callback) {
+        String suffix = "/getOffers/" + String.valueOf(itemID);
+        String getURL = DBUrl + suffix;
+        volleyGETRequest(getURL, new VolleyCallback() {
+            @Override
+            public void onSuccessVolley(JSONArray result) {
+                try {
+                    List<String> usernames = new ArrayList<>();
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jObject = result.getJSONObject(i);
+                        String username = jObject.getString("username");
+                        usernames.add(username);
+                    }
+                    callback.onSuccessDB(usernames);
+                } catch (JSONException e) {
+                    callback.onErrorDB(e.getMessage());
+                    Log.e("Database", "JSON Error" + e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onErrorVolley(String error) {
+                callback.onErrorDB(error);
+                Log.e("Volley", "Error" + error);
+            }
+        });
+
+    }
 
     /*
     /--------------------------------------------------------------------------------------------------------------/

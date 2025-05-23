@@ -66,6 +66,7 @@ public class HistoryMyItemAdapter extends RecyclerView.Adapter<HistoryMyItemAdap
             OfferDetailsFragment newFragment = new OfferDetailsFragment();
             Bundle bundle = new Bundle();
             bundle.putString("itemName", item.getItemName());
+            bundle.putInt("itemID", item.getItem_id());
             bundle.putParcelable("photo", item.getPhoto());
             bundle.putBoolean("status", item.getStatus());
             newFragment.setArguments(bundle);
