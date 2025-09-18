@@ -42,7 +42,7 @@ It features real-time item listings, detailed offer/rental history, and a smooth
 | IDE          | Android Studio              |
 | Compatibility| API 28+                     |
 
-Screenshots of the App:
+## 📸  Screenshots of the App:
 
 <table>
   <tr>
