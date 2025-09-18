@@ -103,7 +103,7 @@ public class LendFragment extends Fragment {
         spinnerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                itemCategory = parent.getItemAtPosition(position).toString();
+                itemCategory = parent.getItemAtPosition(position+1).toString();
                 itemCategoryIndex = categoryMap.get(itemCategory);
             }
 
