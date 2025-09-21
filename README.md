@@ -77,3 +77,72 @@ It features real-time item listings, detailed offer/rental history, and a smooth
   </tr>
 </table>
 
+
+## 🛠️ Running the App Locally
+
+To run this app from source, follow these steps:
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Cloudware727/Convy-Android-App.git
+   cd Convy-Android-App
+2. **Open in Android Studio**
+   
+  - Open the project folder (ap211 or root depending on your structure)
+   
+  - Let Gradle sync and resolve dependencies
+   
+3.**Set up emulator or connect a physical device**
+
+  - API level 28+ recommended
+  
+  - Enable developer mode if using a phone
+
+4.**Run the app**
+
+  - Select the target device
+  
+  - Click the green play button or use Shift + F10
+
+## 🧠 Project Motivation
+
+The goal of Convy was to build a fully functional Android app that replicates core features of modern marketplace platforms, such as item listings, user-based interactions, and persistent data. The app was designed to reinforce Android development fundamentals while applying backend integration and user interface best practices.
+
+---
+
+## 📚 How to Use
+
+1. **Sign Up or Login**
+  - Create a new account or log in with existing credentials.
+
+2. **Lend an Item**
+   - Navigate to the “Lend” tab, fill in item details, and submit.
+
+3. **Rent an Item**
+   - Browse items under the “Rent” tab, view item details, and request to rent.
+
+4. **Track History**
+   - Use the history tabs to monitor items you've rented or lent.
+
+5. **Edit Profile**
+   - Manage your personal info via the “Account” tab.
+
+---
+
+## 🧪 Testing & Debugging
+
+- All screens were manually tested on Android Emulator (API 30) and a real device.
+- Edge cases like empty forms, invalid login, and missing images were handled.
+- Volley error handling includes toast messages and fallbacks on failure.
+
+---
+
+## 🔮 Future Improvements
+
+- Firebase integration for auth and storage
+- Admin panel for managing reported items
+- Push notifications for status changes
+- In-app messaging system between users
+- Dark mode and enhanced animations
+
+
